@@ -1,28 +1,20 @@
 'use client';
 
-import { useUser, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function Navbar() {
-  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navLinks = isSignedIn
-    ? [
-        { href: '/dashboard', label: 'Dashboard' },
-        { href: '/jobs', label: 'Jobs' },
-        { href: '/ai-assistant', label: 'AI Assistant' },
-      ]
-    : [
-        { href: '/#features', label: 'Features' },
-        { href: '/#pricing', label: 'Pricing' },
-        { href: '/#faq', label: 'FAQ' },
-      ];
+  const navLinks = [
+    { href: '/#features', label: 'Features' },
+    { href: '/#pricing', label: 'Pricing' },
+    { href: '/#faq', label: 'FAQ' },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 glass border-b border-white/10 dark:border-white/5">
@@ -52,26 +44,12 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-            {!isLoaded ? (
-              <div className="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-full animate-pulse"></div>
-            ) : isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
-            ) : (
-              <>
-                <button
-                  onClick={() => router.push('/sign-in')}
-                  className="hidden sm:block px-4 py-2 text-slate-700 dark:text-slate-300 font-medium hover:text-primary-500 transition-colors"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => router.push('/sign-up')}
-                  className="gradient-button px-6 py-2 rounded-lg text-sm"
-                >
-                  Get Started
-                </button>
-              </>
-            )}
+            <button
+              onClick={() => router.push('/dashboard/upload')}
+              className="gradient-button px-6 py-2 rounded-lg text-sm"
+            >
+              Get Started
+            </button>
           </div>
 
           <button

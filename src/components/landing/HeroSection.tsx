@@ -2,11 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 
 export default function HeroSection() {
   const router = useRouter();
-  const { isSignedIn } = useUser();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -63,10 +61,10 @@ export default function HeroSection() {
 
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <button
-            onClick={() => router.push(isSignedIn ? '/dashboard' : '/sign-up')}
+            onClick={() => router.push('/dashboard/upload')}
             className="gradient-button px-8 py-4 rounded-lg font-semibold text-lg shadow-lg shadow-primary-500/30"
           >
-            {isSignedIn ? 'Go to Dashboard' : 'Start Free Analysis'}
+            Start Free Analysis
           </button>
           <button
             onClick={() => router.push('/#features')}
