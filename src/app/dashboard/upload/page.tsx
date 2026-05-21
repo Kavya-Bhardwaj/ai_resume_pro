@@ -1,26 +1,17 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { motion } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 
 export default function ResumeUploadPage() {
-  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -67,14 +58,6 @@ export default function ResumeUploadPage() {
       setIsUploading(false);
     }
   };
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isSignedIn) {
-    return null;
-  }
 
   return (
     <>
@@ -175,7 +158,7 @@ export default function ResumeUploadPage() {
             >
               {[
                 { icon: '⚡', title: 'Instant Analysis', desc: 'Get your ATS score in seconds' },
-                { icon: '🎯', title: 'Smart Suggestions', desc: 'AI-powered improvement tips' },
+                { icon: '🧠', title: 'Smart Suggestions', desc: 'AI-powered improvement tips' },
                 { icon: '💼', title: 'Job Matches', desc: 'Find perfect job opportunities' },
               ].map((item, i) => (
                 <div key={i} className="glass rounded-xl p-6 border border-white/10">

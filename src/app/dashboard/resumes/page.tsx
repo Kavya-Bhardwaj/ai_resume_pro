@@ -1,11 +1,9 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -17,16 +15,9 @@ interface Resume {
 }
 
 export default function ResumesPage() {
-  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [isLoadingResumes, setIsLoadingResumes] = useState(true);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     const fetchResumes = async () => {
@@ -43,18 +34,8 @@ export default function ResumesPage() {
       }
     };
 
-    if (isLoaded && isSignedIn) {
-      fetchResumes();
-    }
-  }, [isLoaded, isSignedIn]);
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isSignedIn) {
-    return null;
-  }
+    fetchResumes();
+  }, []);
 
   return (
     <>
@@ -77,7 +58,7 @@ export default function ResumesPage() {
           </div>
 
           {isLoadingResumes ? (
-            <LoadingSpinner />
+            <div className="text-center py-12">Loading...</div>
           ) : resumes.length === 0 ? (
             <motion.div
               className="glass rounded-2xl p-12 text-center border border-white/10"

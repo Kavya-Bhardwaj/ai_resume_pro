@@ -1,11 +1,9 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { motion } from 'framer-motion';
 
 interface Job {
@@ -19,7 +17,6 @@ interface Job {
 }
 
 export default function JobsPage() {
-  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
@@ -28,12 +25,6 @@ export default function JobsPage() {
     minSalary: 0,
     location: '',
   });
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -55,18 +46,8 @@ export default function JobsPage() {
       }
     };
 
-    if (isLoaded && isSignedIn) {
-      fetchJobs();
-    }
-  }, [isLoaded, isSignedIn, filters]);
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isSignedIn) {
-    return null;
-  }
+    fetchJobs();
+  }, [filters]);
 
   return (
     <>
@@ -125,7 +106,7 @@ export default function JobsPage() {
             {/* Jobs List */}
             <div className="lg:col-span-3">
               {isLoadingJobs ? (
-                <LoadingSpinner />
+                <div className="text-center py-12">Loading jobs...</div>
               ) : jobs.length === 0 ? (
                 <motion.div
                   className="glass rounded-2xl p-12 text-center border border-white/10"

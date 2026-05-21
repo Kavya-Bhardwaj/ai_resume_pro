@@ -1,11 +1,9 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
@@ -17,7 +15,6 @@ interface Message {
 }
 
 export default function AIAssistantPage() {
-  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -29,12 +26,6 @@ export default function AIAssistantPage() {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -76,14 +67,6 @@ export default function AIAssistantPage() {
       setIsLoading(false);
     }
   };
-
-  if (!isLoaded) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isSignedIn) {
-    return null;
-  }
 
   return (
     <>
