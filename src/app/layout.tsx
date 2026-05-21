@@ -1,7 +1,6 @@
 'use client';
 
 import type { Metadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/components/shared/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
 import '../styles/globals.css';
@@ -18,19 +17,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <meta charSet="utf-8" />
-          <link rel="icon" href="/favicon.ico" />
-        </head>
-        <body>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            {children}
-            <Toaster position="top-right" />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+          <Toaster position="top-right" />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
