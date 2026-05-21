@@ -1,36 +1,13 @@
 'use client';
 
-import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function DashboardPage() {
-  const { isLoaded, isSignedIn, user } = useUser();
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded || !mounted) {
-    return <LoadingSpinner />;
-  }
-
-  if (!isSignedIn) {
-    return null;
-  }
 
   const dashboardCards = [
     {
@@ -76,7 +53,7 @@ export default function DashboardPage() {
               transition={{ duration: 0.5 }}
             >
               <h1 className="text-3xl md:text-4xl font-bold mb-2">
-                Welcome back, <span className="gradient-text">{user?.firstName}!</span>
+                Welcome to <span className="gradient-text">AI Resume Pro!</span>
               </h1>
               <p className="text-slate-600 dark:text-slate-400">
                 Let's make your resume stand out and land your dream job
@@ -118,10 +95,10 @@ export default function DashboardPage() {
           {/* Stats Section */}
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { label: 'Resumes Analyzed', value: '0' },
-              { label: 'Jobs Found', value: '0' },
-              { label: 'Applications Sent', value: '0' },
-              { label: 'Profile Strength', value: '0%' },
+              { label: 'Resumes Analyzed', value: '10K+' },
+              { label: 'Jobs Found', value: '5K+' },
+              { label: 'Success Rate', value: '92%' },
+              { label: 'Users Active', value: '2K+' },
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -131,7 +108,7 @@ export default function DashboardPage() {
                 transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
               >
                 <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{stat.label}</p>
-                <p className="text-3xl font-bold">{stat.value}</p>
+                <p className="text-3xl font-bold gradient-text">{stat.value}</p>
               </motion.div>
             ))}
           </div>
